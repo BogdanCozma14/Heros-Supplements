@@ -1,4 +1,4 @@
-// defining the function for submiting the form when a category was selected
+ // defining the function for submiting the form when a category was selected
 function submitForm() {
     document.getElementById("categoryProductsForm").submit();       
 }
