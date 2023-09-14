@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block title %}
+    Find your Supplements
+{% endblock %}
+
+{% block main %}
+
+    <!-- The main content of the homepage -->
+      
+        <div class="grid-item">   
+            <div class="border-title">
+                <h2>MENU</h2>
+            </div>
+        </div>
+
+        <div class="menu-portofolio">
+        
+            <div class="image-product">
+                  <img src="{{ url_for('static', filename='Wheyprotein.png') }}" alt="" class="menu-images">
+                  <p class="hover-text"><strong>Whey Protein</strong></p>
+                  <div class="image-overlay">
+                    <a href="{{ url_for('display_products', category='Proteins') }}"> <i class="fa-solid fa-link"></i> </a>
+                    <a href="#" class="zoom-button"><i class="fa-solid fa-magnifying-glass"></i> </a>
+                  </div>
+            </div>
+            
+            <div class="image-product">
+                <img src="{{ url_for('static', filename='creatine.png') }}" alt="" class="menu-images">
+                <p class="hover-text"><strong>Creatine</strong></p>
+                <div class="image-overlay">
+                  <a href="{{ url_for('display_products', category='Creatine')}}"> <i class="fa-solid fa-link"></i> </a>
+                  <a href="#" class="zoom-button"><i class="fa-solid fa-magnifying-glass"></i> </a>
+                </div>
+            </div>
+
+            <div class="image-product"> 
+                <img src="{{ url_for('static', filename='bcaa.png') }}" alt="" class="menu-images"> 
+                <p class="hover-text"><strong>Bcaa</strong></p>
+                <div class="image-overlay">  
+                  <a href="{{ url_for('display_products', category='Bcaa')}}"> <i class="fa-solid fa-link"></i> </a>
+                  <a href="#" class="zoom-button"><i class="fa-solid fa-magnifying-glass"></i> </a>
+                </div>
+            </div>
+
+            <div class="image-product">
+                <img src="{{ url_for('static', filename='Multivitamins.png') }}" alt="" class="menu-images">      
+                <p class="hover-text"><strong>Multi vitamins</strong></p>
+                <div class="image-overlay">
+                  <a href="{{ url_for('display_products', category='Vitamins') }}"> <i class="fa-solid fa-link"></i> </a>
+                  <a href="#" class="zoom-button"><i class="fa-solid fa-magnifying-glass"></i> </a>
+                </div>
+            </div>
+
+            <div class="image-product">
+                <img src="{{ url_for('static', filename='HealthySnacks.png') }}" alt="" class="menu-images">        
+                <p class="hover-text"><strong>Protein snacks</strong></p>
+                <div class="image-overlay">
+                  <a href="{{ url_for('display_products', category='Healthy Snacks') }}">  <i class="fa-solid fa-link"></i> </a>
+                  <a href="#" class="zoom-button"><i class="fa-solid fa-magnifying-glass"></i> </a>
+                </div>
+            </div>
+          </div>
+        
+          <div class="enlargeImage active">
+            <span class="close-enlargedImg">&times;</span>
+            <img src="static/Wheyprotein.png" alt="Enlarge Image">
+          </div>
+        
+
+        {% for category, category_products in products_by_category.items() %}
+          {% if category != 'Healthy Snacks' %}
+          <div class="grid-item">
+            <div class="border-title">
+              <h2>{{ category }}</h2>
+            </div>
+          </div>
+          {% endif %}
+          
+          <div class="products-section">
+            {% set product_counter = 0 %}
+            {% for product in category_products %}
+            {% if product.category != 'Healthy Snacks' and product_counter < 5 %}
+              <div class="container-products">
+                <!-- <img src="{{ product.url_image }}" alt="Product Image" class="product"> -->
+                <img src="{{ url_for('static', filename=product.url_image) }}" alt="Product Image" class="product">
+                <div class="image-overlay">
+                  <a href="{{ url_for('add_to_cart', product_id=product.id) }}"><i class="fa-solid fa-cart-shopping"></i></a>
+                </div> 
+                <div class="product-info">
+                  <p class="description"> {{ product.description}}</p>
+                  <span class="price">${{ product.price }}</span>
+                </div>
+              </div>
+              {% set product_counter = product_counter + 1 %}
+            {% endif %}  
+            {% endfor %}
+          </div>
+
+        {% endfor %}
+
+{% endblock %}

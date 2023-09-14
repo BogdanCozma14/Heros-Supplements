@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+
+        <!-- http://getbootstrap.com/docs/5.3.1/ -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        <!-- Favicoin -->
+        <link href="/static/hero-favicoin.png" rel="icon">
+        <!-- link for javascript -->
+        <script src="{{ url_for('static', filename='myscript.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- link for css -->
+        <!-- <link href="/static/styles.css" rel="stylesheet"> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/91357bdc68.js" crossorigin="anonymous"></script>
+
+        <title>{% block title %} {% endblock %}</title>
+
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light navigation-bar py-3">
+            <div class="container">
+                <a class="navbar-brand fs-4 text-white" href="/"><h3>Heros Supplements</h3></a>
+                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!--sidebar-->
+                <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <!-- sidebar header  -->
+                  <div class="offcanvas-header text-white border-bottom">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Hero Supplements</h5>
+                        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <!-- sidebar body -->
+                <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-2">
+                  <ul class="navbar-nav justify-content-center align-items-center fs-5 flex-grow-1 pe-3">
+                    <li class="nav-item mx-2">
+                      <a class="nav-link link-item" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                      <a class="nav-link link-item" href="{{ url_for('display_products', page=1) }}">Supplements</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                      <a class="nav-link link-item" href="../about">About</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                      <a class="nav-link link-item" href="../contact">Contact</a>
+                    </li>
+                    <div class="cart">
+                      <a href="../cart" class="text-decoration-none py-1 rounded-4">
+                        <i class="fa-solid fa-cart-shopping cart-icon {% if cart_count > 0 %} fa-bounce {% endif %}"></i>
+                        <span class="cart-count" id="cart-count">({{ cart_count }})</span>
+                      </a>
+                    </div>
+                  </ul>
+                  <!-- check if the user is logged in with an account -->
+                  {% if 'user_id' in session %}
+                  <!-- display the logout button -->
+                    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 mx-3">
+                      <a href="/logout" class="text-white text-decoration-none px-3 py-1 rounded-4"
+                      style="background-color: #d8467e;"
+                      >Logout</a>
+                    </div>
+                  {% else %}
+                  <!-- display the login/signup -->
+                    <div class="d-flex flex-column flex-lg-row justify-content-start align-items-center gap-3 mx-1 login-signup">
+                      <a href="/login" class="text-white text-decoration-none px-3 py-1 rounded-4"
+                      style="background-color: #1E90FF;"                    
+                      >Login</a>
+                      <a href="/signup" class="text-white text-decoration-none px-3 py-1 rounded-4"
+                      style="background-color: #f94ca4;"
+                      >Sign Up</a>
+                    </div>
+                  {% endif %}
+                  <!-- The cart -->
+              </div>
+            </div>
+          </div>
+    </nav>
+
+
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-primary mb-0 text-center" role="alert">
+                    {{ get_flashed_messages() | join(" ") }}
+                </div>
+            </header>
+        {% endif %}
+        
+        <main class="container-fluid py-5 text-center">
+              {% block main %}{% endblock %}
+        </main>
+  <!-- Footer section -->
+    <footer id="footer" class="bg-white">
+      <div class="row">
+        <div class="col">
+          <h1 class="logo">Heros supplements</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        </div>
+        <div class="col">
+          <h3>Office <div class="underline"><span></span></div></h3>
+          <p>
+            Sector 1
+          </p>
+          <p>Bucharest, Romania</p>
+          <p>Street Aripilor, PIN014341, Romania</p>
+          <p class="email-id">bcozma61@yahoo.com</p>
+          <h6>+40 -0123985567</h6>
+        </div>
+        <div class="col">
+          <h3>Links <div class="underline"><span></span></div></h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url_for('display_products', page=1) }}">Supplements</a></li>
+            <li><a href="../cart">Cart</a></li>
+            <li><a href="../about">About Us</a></li>
+            <li><a href="../contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Newsletter <div class="underline"><span></span></div></h3>
+          <form action="/subscribe" method="post">
+            <i class=" email-icon fa-regular fa-envelope"></i>
+            <input type="email" placeholder="Enter your email id" required>
+            <button type="submit"><i class="sendEmail fas fa-arrow-right"></i></button>
+          </form>
+             <!-- Social media  -->
+           <div class="social-icons">
+            <a class="button" href="https://ro-ro.facebook.com/" target="_blank">
+              <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
+              <span>Fakebook</span>
+            </a>
+            <a class="button" href="https://twitter.com/" target="_blank">
+              <div class="icon"><i class="fa-brands fa-x-twitter"></i></div>
+              <span>Twitter</span>
+            </a>
+            <a class="button" href="https://www.instagram.com/" target="_blank">
+              <div class="icon"><i class="fa-brands fa-instagram"></i></div>
+              <span>Instagram</span>
+            </a>
+        </div>
+      </div>
+      </div>
+
+    </footer>
+  </body>
+</html>

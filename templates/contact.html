@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Contact Us
+{% endblock %}
+
+{% block main %}
+    <section class="contact-form">
+        <div class="form-area">
+            <div class="container">
+                <div class="row single-form g-0">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="left">
+                            <h2><span>Contact Us For</span><br>Business Enquiries</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="right">
+                            <i class="fa fa-caret-left"></i>
+                            <form action="/form" method="post">
+                                <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="InputName" name="name" aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label" name="email">Email address</label>
+                                <input type="email" class="form-control" id="InputEmail" name="email" aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Message</label>
+                                    <textarea type="password" class="form-control" id="InputMessage" name="message" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

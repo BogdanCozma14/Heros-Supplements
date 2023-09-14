@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Our Products
+{% endblock %}
+
+{% block main %}
+    <section id="products-display">
+        <div class="grid-item">   
+            <div class="border-title">
+                <h2>Discover Our <span>Featured</span> <strong class="strong-products">Products</strong></h2>
+            </div>
+        </div>
+        <!-- the form for selecting the desired category of products to be displayed on the page -->
+        <form method="GET" action="{{ url_for('display_products', page=1) }}" id="categoryProductsForm" name="category">
+            <label for="category" style="color: #fff";><h4>Sort by</h4></label>
+            <select id="category" name="category" onchange="submitForm()" class="select-category">
+                <option value="All" {% if selected_category == 'All' %} selected style="color: #fff;" {% endif %} class="optionCategory">All</option>
+                <option value="Proteins" {% if selected_category == 'Proteins' %} selected {% endif %} class="optionCategory">Proteins</option>
+                <option value="Bcaa" {% if selected_category == 'Bcaa' %} selected {% endif %} class="optionCategory">Bcaa</option>
+                <option value="Creatine" {% if selected_category == 'Creatine' %} selected {% endif %} class="optionCategory">Creatine</option>
+                <option value="Vitamins" {% if selected_category == 'Vitamins' %} selected {% endif %} class="optionCategory">Multivitamins</option>
+                <option value="Healthy Snacks" {% if selected_category == 'Healthy Snacks' %} selected {% endif %} class="optionCategory">Healthy Snacks</option>
+            </select>
+        </form>
+
+        <div class="grid-item">   
+            <div class="border-title">
+                <h2>{{ selected_category }} <strong class="strong-products">Products</strong></h2>
+            </div>
+        </div>
+        <!-- Main content of the page for displaying the products -->
+        <div class="shop-content">
+            {% for product in products %}
+                <div class="product-box">
+                    <!-- <img src="{{ product.url_image}}" alt="Supplement Image" class="product-img"> -->
+                    <img src="{{url_for('static', filename=product.url_image) }}" alt="Supplement Image" class="product-img">
+                    <h2 class="product-title">{{ product.description }}</h2>
+                    <span class="price">${{ product.price }}</span>
+                    <a href="{{ url_for('add_to_cart', product_id=product.id) }}"  class="add-cart-anchor"><i class="fa-solid fa-bag-shopping add-cart"></i></a>
+                </div>
+                {% endfor %}
+        </div>
+        
+        <!-- making the pagination in order to go on the next or the previous page -->
+        <div class="pagination">
+            <div class="page-link{% if page <= 1 %} disabled{% endif %}">
+                {% if page > 1 %}
+                    <a href="{{ url_for('display_products', page=page-1) }}">Previous</a>
+                {% else %}
+                    <span>Previous</span>
+                {% endif %}
+            </div>
+        
+            {% for p in range(1, total_pages + 1) %}
+                <div class="page-link" style="width: 40px;">
+                    {% if p != page %}
+                        <a href="{{ url_for('display_products', page=p) }}">{{ p }}</a>
+                    {% else %}
+                        <span>{{ p }}</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        
+            <div class="page-link{% if total_pages <= page %} disabled{% endif %}">
+                {% if total_pages - page > 0 %}
+                    <a href="{{ url_for('display_products', page=page+1) }}">Next</a>
+                {% else %}
+                    <span>Next</span>
+                {% endif %}
+            </div>
+        </div>
+        
+    </section>
+
+{% endblock %}

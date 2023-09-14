@@ -1,0 +1,128 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Your cart
+{% endblock %}
+
+{% block main %}
+        {% if cart_items %}
+            <h1 style="color: #fff; position: absolute; margin-left: 40px;">View Your Cart</h1>
+            <div class="small-container cart-page">
+                <table>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity
+                            <div class="quantity-header"></div>
+                        </th>
+                        <th>Subtotal</th>
+                    </tr>
+                    {% for cart_item in cart_items %}
+                    <tr>
+                        <td>
+                            <div class="cart-info">
+                                <img src="{{url_for('static', filename=cart_item.product.url_image) }}" class="cart-img">
+                                <div class="subsection">
+                                    <p>{{ cart_item.product.description }}</p>
+                                    <small class="small-quantity">{{ cart_item.quantity }} x ${{ cart_item.product.price }}</small>
+                                    <br>
+                                    <a href="{{ url_for('remove_from_cart', cart_item_id=cart_item.id) }}" class="remove-item">Remove</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="quantity">
+                            <button class="decrement" data-cart-item-id="{{ cart_item.id }}">-</button>
+                            <p class="product-quantity">{{ cart_item.quantity }}</p>
+                            <button class="increment" data-cart-item-id="{{ cart_item.id }}">+</button>
+                        </td>    
+                        <td>${{ cart_item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="total-price">
+                    <table>
+                        <tr>
+                            <td class="td-value">Subtotal</td>
+                            <td>${{ total_cart_price }}</td>
+                        </tr>
+                        <tr>
+                            <td class="td-value">Transport</td>
+                            <td>$8</td>
+                        </tr>
+                        <tr>
+                            <td class="td-value">Total</td>
+                            <td>${{ total_cart_price + 8}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- commit changes button -->
+                <div>
+                    <a href="/cart" class="submit-changes">Save the changes</a>
+                </div>
+                <!-- the checkout button -->
+                <div class="checkout-button">
+                    <a href="" class="checkout-btn">Checkout</a>
+                </div>
+            </div>
+        {% else %}
+            <h1 style="color: #fff; font-weight: bold; margin: 100px 0 200px 0;">Your cart is currently empty</h1>
+        {% endif %}
+        <!-- js code for the incrementing/decrementing buttons -->
+        <script>    
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Select all increment and decrement buttons
+                const incrementButtons = document.querySelectorAll('.increment');
+                const decrementButtons = document.querySelectorAll('.decrement');
+                const productQuantities = document.querySelectorAll('.product-quantity');
+                const smallQuantities = document.querySelectorAll('.small-quantity');
+                // Adding event listeners to all increment buttons
+                incrementButtons.forEach((plus_button, index) => {
+                    plus_button.addEventListener("click", () => {
+                        // Find the quantity element for the corresponding product
+                        const cartItemId = plus_button.getAttribute('data-cart-item-id');  // getting the cart id
+                        const quantityElement = productQuantities[index];
+                        const smallElement = smallQuantities[index];
+                        // make the submit changes button available
+                        let quantity_product = parseInt(quantityElement.textContent, 10);
+                        // update the quantity displayed
+                        quantity_product++;
+                        quantityElement.textContent = quantity_product
+                        $.ajax({
+                            type: 'POST',
+                            url: '/update_quantity',
+                            data: {
+                                cart_item_id: cartItemId,
+                                new_quantity: quantity_product // Sending the new quantity
+                            },
+                         });
+                    });
+                });
+
+                // Adding event listeners to all decrement buttons
+                decrementButtons.forEach((minus_button, index) => {
+                    minus_button.addEventListener("click", () => {
+                        // Find the quantity element for the corresponding product
+                        const cartItemId = minus_button.getAttribute('data-cart-item-id');  // getting the cart id
+                        const quantityElement = productQuantities[index];
+                        let quantity_product = parseInt(quantityElement.textContent, 10);
+                        if (quantity_product > 1) {
+                            quantity_product--;
+                            console.log(quantity_product);
+                            console.log(cartItemId);
+                            // Update the quantity displayed
+                            quantityElement.textContent = quantity_product;
+                            // AJAX request to update the quantity in the database
+                            $.ajax({
+                                type: 'POST',
+                                url: '/update_quantity',
+                                 data: {
+                                    cart_item_id: cartItemId,
+                                    new_quantity: quantity_product // Sending the new quantity
+                                },
+                            });
+                        }
+                    });
+                });
+            });
+
+        </script>
+{% endblock %}
