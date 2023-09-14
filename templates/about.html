@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}
+    About Us
+{% endblock %}
+
+{% block main %}
+
+<section class="about">
+    <div class="content">
+      <img src="{{ url_for('static', filename='herosSupplements.jpg')}}" class="supplements-image">
+      <div class="about-text">
+        <h1 class="about-header">About Us</h1>
+        <h5>Empowering Your Health Journey with Premium Supplements</h5>
+        <p>
+          We hold quality to the highest standard, ensuring that every product we offer is a testament to our commitment to excellence.
+          We recognize that every individual's journey is unique, and cookie-cutter solutions simply won't cut it.
+          That's why we emphasize a personalized approach to your wellness. Whether you're aiming to build lean muscle, boost endurance, enhance cognitive function, or simply lead a more energetic life, our diverse range of supplements is designed to cater to your specific needs.
+          Our team is here to guide you, offering expert advice and support to help you make informed choices that align with your goals.
+          Welcome to the Hero Supplements family - where your wellness journey becomes our shared purpose.
+        </p>
+        <!-- <button class="buySupps-button"type="button" name="Buy">Buy Supplements</button> -->
+        <a class="buySupps-button" type="button" href="{{ url_for('display_products', page=1) }}">Buy Supplements</a>
+        <!-- <button class="aboutContact-button"type="button" name="Buy">Contact Us</button> -->
+        <a class="aboutContact-button" type="button" href='../contact'>Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
