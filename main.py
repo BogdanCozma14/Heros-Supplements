@@ -109,6 +109,7 @@ def index():
     for product in products:
         if product.category not in products_by_category:
             products_by_category[product.category] = []
+        product.price = round(product.price, 2)
         products_by_category[product.category].append(product)
     return render_template("index.html", products_by_category=products_by_category, cart_count=cart_count)
 
@@ -135,6 +136,8 @@ def display_products(page):
     else:
         products = Product.query.filter_by(category=selected_category).offset(offset).limit(products_per_page).all()
         # total number of products
+        for product in products:
+            product.price = round(product.price, 2)
         total_products = Product.query.filter_by(category=selected_category).count()
 
     # Calculate the total number of pages
